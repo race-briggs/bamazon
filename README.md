@@ -15,6 +15,7 @@ bamazon's consumer-facing store allows shoppers to view a list of products along
 
 Enjoy a presentation of the consumer app:
 
+![consumer-app example](/gifs/consumer.gif)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -25,6 +26,7 @@ add inventory, and add new products.
 
 Here is a demonstration of the management app:
 
+![manager example](/gifs/manager.gif)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
