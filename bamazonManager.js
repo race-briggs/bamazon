@@ -61,11 +61,71 @@ function viewLowInv(){
 }
 
 function addInv(){
+  inquirer.prompt({
+    type: 'number',
+    name: 'product_id',
+    message: 'What is the ID of the product you want to restock?'
+  }).then(function(response, error){
+    if(error) throw error;
+    var ID = response.product_id
+    getStock(ID);
+  })
+}
 
+function getStock(id){
+  connection.query('SELECT * FROM products WHERE id='+id, function(error, response){
+    restockProduct(id, response[0].stock_quantity);
+  })
+}
+
+function restockProduct(id, stock){
+  inquirer.prompt({
+    type: 'number',
+    name: 'restock',
+    message: 'How much product would you like to restock?'
+  }).then(function(response, error){
+    var newStock = stock + response.restock;
+    console.log(newStock)
+    if(error) throw error;
+    connection.query('UPDATE products SET stock_quantity='+ newStock + ' WHERE id='+id, function(error, results){
+      console.log('Product Stock Ordered.');
+      returnToMenu();
+    });
+  })
 }
 
 function addProduct(){
+  inquirer.prompt([
+  {
+    type: 'input',
+    name: 'product_name',
+    message: 'What is the name of the product?'
+  },
+  {
+    type: 'input',
+    name: 'department_name',
+    message: 'What department is it in?'
+  },
+  {
+    type: 'number',
+    name: 'price',
+    message: 'How much does this product cost?'
+  },
+  {
+    type: 'number',
+    name: 'stock_quantity',
+    message: 'How many are you stocking?'
+  }
+  ]).then(function(response, error){
+    if(error) throw console.error();
+    var newProduct = response;
+    console.log(newProduct);
+    connection.query('INSERT INTO products (product_name, department_name, price, stock_quantity) VALUE ("' + newProduct.product_name + '","' + newProduct.department_name + '",' + newProduct.price + ',' + newProduct.stock_quantity + ');', function (error, response) {
+      console.log('Product entered.')
+      returnToMenu();
+    })
 
+  })
 }
 
 function returnToMenu(){
